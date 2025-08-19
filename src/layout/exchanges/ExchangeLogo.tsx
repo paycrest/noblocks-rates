@@ -88,7 +88,7 @@ const ExchangeLogo = ({
             viewBox="0 0 39 39"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="absolute inset-0 -translate-1.5"
+            className="absolute inset-0 -translate-1.5 ml-1 mt-1"
           >
             <path
               d="M1 33.7955V38H5.20455M1 5.20455V1H5.20455M33.7955 1H38V5.20455M33.7955 38H38V33.7955"

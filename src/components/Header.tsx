@@ -10,7 +10,7 @@ const Header: React.FC = () => {
 
   return (
     <header className="w-full h-[6rem] flex flex-row items-center justify-between gap-7 py-5 px-7 md:px-20">
-      <Link href="/">
+      <Link href="/" className="flex items-center gap-2">
         <Image
           src="/logo/logo.svg"
           alt="logo"
@@ -18,6 +18,7 @@ const Header: React.FC = () => {
           height={120}
           className="w-[12rem] h-[1.32rem] object-contain cursor-pointer"
         />
+        <Image src='https://res.cloudinary.com/dfkuxnesz/image/upload/v1755158461/rates-logo_eezrj7.svg' alt="hero" className="w-[4.91647rem] h-[4.91647rem]" width={120} height={120} />
       </Link>
 
       <Link

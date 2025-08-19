@@ -1,0 +1,1 @@
+export const availableCurrencies = ['NGN', 'KES', 'UGX', 'TZS']
