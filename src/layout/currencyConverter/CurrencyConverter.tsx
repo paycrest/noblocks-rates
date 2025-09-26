@@ -172,19 +172,13 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
     return `https://noblocks.xyz/?token=${fromCurrency.type === "crypto" ? fromCurrency.code : toCurrency.code}&currency=${toCurrency.type === "fiat" ? toCurrency.code : fromCurrency.code}&tokenAmount=${toCurrency.type === "crypto" ? toAmount : fromAmount}`;
   }
 
-  // Update currency lists and selection when location is loaded
+  // Update currency lists when location is loaded (only prioritize, don't force selection)
   useEffect(() => {
     if (location && userCurrencyCode && fiatCurrencies.length > 0) {
-      // Update the currency list to prioritize user's currency
+      // Update the currency list to prioritize user's currency at the top
       setToList(prioritizeUserCurrency(fiatCurrencies, userCurrencyCode));
-      
-      // Find and set the user's currency as the default "to" currency
-      const userCurrency = fiatCurrencies.find((c) => c.code === userCurrencyCode);
-      if (userCurrency && toCurrency.code !== userCurrencyCode) {
-        setToCurrency(userCurrency);
-      }
     }
-  }, [location, userCurrencyCode, fiatCurrencies, toCurrency.code, setToCurrency]);
+  }, [location, userCurrencyCode, fiatCurrencies]);
 
   useEffect(() => {
     initialRatesFetch();
