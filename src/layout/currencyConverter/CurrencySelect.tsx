@@ -85,11 +85,11 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
             </div>
           </div>
 
-          <div className="max-h-[24rem] overflow-y-auto overflow-x-hidden">
+          <div className="max-h-[24rem] overflow-y-auto overflow-x-hidden px-2">
             {filteredCurrencies.map((currency) => (
               <button
                 key={currency.code}
-                className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-[#3C3C3E] transition-colors cursor-pointer"
+                className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-[#3C3C3E] hover:rounded-lg transition-colors cursor-pointer my-1"
                 onClick={() => {
                   onSelect(currency);
                   setIsOpen(false);
