@@ -2,6 +2,7 @@
 
 import { useCurrencyConverter } from "@/hooks/useCurrencyConverter";
 import { useCurrencyRates } from "@/hooks/useCurrencyRates";
+import { useUserLocation } from "@/hooks/useUserLocation";
 import { CurrencyInput } from "./CurrencyInput";
 import { SwapButton } from "./SwapButton";
 import { useEffect, useRef, useState } from "react";
@@ -11,17 +12,24 @@ import ExchangeView from "../exchanges/ExchangeView";
 import { Currency } from "../../types/currency";
 import { Loader } from "../../components/Loader";
 import { availableCurrencies } from "@/data/availableCurrencies";
+import { getCurrencyByCountry, prioritizeUserCurrency } from "@/utils/currencyUtils";
 
 interface CurrencyConverterProps { }
 export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
   const [loader, setLoader] = useState<boolean>(false);
   const { fiatCurrencies, cryptoCurrencies, refreshRates } = useCurrencyRates();
+  const { location, loading: locationLoading } = useUserLocation();
 
+  // Get user's local currency code
+  const userCurrencyCode = location ? getCurrencyByCountry(location.countryCode) : null;
+  
   const initialFromCurrency = useRef<Currency>(
     cryptoCurrencies.find((c) => c.code === "USDT") || cryptoCurrencies[0]
   );
   const initialToCurrency = useRef<Currency>(
-    fiatCurrencies.find((c) => c.code === "HUF") || fiatCurrencies[0]
+    fiatCurrencies.find((c) => c.code === userCurrencyCode) || 
+    fiatCurrencies.find((c) => c.code === "USD") || 
+    fiatCurrencies[0]
   );
 
   const {
@@ -42,7 +50,9 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
   );
 
   const [fromList, setFromList] = useState(cryptoCurrencies);
-  const [toList, setToList] = useState(fiatCurrencies);
+  const [toList, setToList] = useState(
+    userCurrencyCode ? prioritizeUserCurrency(fiatCurrencies, userCurrencyCode) : fiatCurrencies
+  );
   const [isActive, setIsActive] = useState(false);
 
   const handleSwapWithLists = async () => {
@@ -55,7 +65,7 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
           return;
         }
         setFromList(cryptoCurrencies);
-        setToList(rates);
+        setToList(userCurrencyCode ? prioritizeUserCurrency(rates, userCurrencyCode) : rates);
         initialToCurrency.current = rates.find(
           (c: any) => c.code === fromCurrency.code
         );
@@ -72,7 +82,7 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
           console.error("No rates found for the selected currency.");
           return;
         }
-        setFromList(rates);
+        setFromList(userCurrencyCode ? prioritizeUserCurrency(rates, userCurrencyCode) : rates);
         setToList(cryptoCurrencies);
 
         initialToCurrency.current = cryptoCurrencies.find(
@@ -98,7 +108,7 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
         return;
       }
       setFromList(cryptoCurrencies);
-      setToList(rates);
+      setToList(userCurrencyCode ? prioritizeUserCurrency(rates, userCurrencyCode) : rates);
 
       initialToCurrency.current = rates.find((c: Currency) => c.code === toCurrency.code);
 
@@ -118,7 +128,7 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
         return;
       }
       setFromList(cryptoCurrencies);
-      setToList(rates);
+      setToList(userCurrencyCode ? prioritizeUserCurrency(rates, userCurrencyCode) : rates);
       initialToCurrency.current = rates.find((c: Currency) => c.code === toCurrency.code);
       if (!initialToCurrency.current) {
         initialToCurrency.current = rates[0];
@@ -135,7 +145,7 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
         console.error("No rates found for the selected currency.");
         return;
       }
-      setFromList(rates);
+      setFromList(userCurrencyCode ? prioritizeUserCurrency(rates, userCurrencyCode) : rates);
       setToList(cryptoCurrencies);
 
 
@@ -161,6 +171,20 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
   const getNoblocksUrl = () => {
     return `https://noblocks.xyz/?token=${fromCurrency.type === "crypto" ? fromCurrency.code : toCurrency.code}&currency=${toCurrency.type === "fiat" ? toCurrency.code : fromCurrency.code}&tokenAmount=${toCurrency.type === "crypto" ? toAmount : fromAmount}`;
   }
+
+  // Update currency lists and selection when location is loaded
+  useEffect(() => {
+    if (location && userCurrencyCode && fiatCurrencies.length > 0) {
+      // Update the currency list to prioritize user's currency
+      setToList(prioritizeUserCurrency(fiatCurrencies, userCurrencyCode));
+      
+      // Find and set the user's currency as the default "to" currency
+      const userCurrency = fiatCurrencies.find((c) => c.code === userCurrencyCode);
+      if (userCurrency && toCurrency.code !== userCurrencyCode) {
+        setToCurrency(userCurrency);
+      }
+    }
+  }, [location, userCurrencyCode, fiatCurrencies, toCurrency.code, setToCurrency]);
 
   useEffect(() => {
     initialRatesFetch();

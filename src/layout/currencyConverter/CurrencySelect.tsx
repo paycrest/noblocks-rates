@@ -85,7 +85,7 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
             </div>
           </div>
 
-          <div className="max-h-[24rem] overflow-y-auto">
+          <div className="max-h-[24rem] overflow-y-auto overflow-x-hidden">
             {filteredCurrencies.map((currency) => (
               <button
                 key={currency.code}
@@ -99,21 +99,21 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
                 <img
                   src={currency.type === "fiat" ? `https://flagcdn.com/w40/${currency.symbol!.toLowerCase()}.png` : currency.iconUrl}
                   alt={currency.code}
-                  className="w-8 h-8 rounded-full"
+                  className="w-8 h-8 rounded-full flex-shrink-0"
                 />
 
-                <div className="flex flex-col w-full">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-start gap-2">
-                      <span className="font-medium text-[1.16667rem] text-white">
+                <div className="flex flex-col w-full min-w-0">
+                  <div className="flex items-center justify-between gap-2 w-full">
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                      <span className="font-medium text-[1.16667rem] text-white whitespace-nowrap flex-shrink-0">
                         {currency.code}
                       </span>
-                      <span className="text-[1.16667rem] text-white/80">
+                      <span className="text-[1.16667rem] text-white/80 truncate min-w-0">
                         {currency.name}
                       </span>
                     </div>
                     {selectedCurrency.code === currency.code && (
-                      <Check className="w-4 h-4 text-white/80" />
+                      <Check className="w-4 h-4 text-white/80 flex-shrink-0" />
                     )}
                   </div>
                 </div>
