@@ -79,8 +79,9 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
         setFromList(userCurrencyCode ? prioritizeUserCurrency(rates, userCurrencyCode) : rates);
         setToList(cryptoCurrencies);
 
-        initialToCurrency.current = cryptoCurrencies.find((c) => c.code === nextFrom.code)!;
-        initialFromCurrency.current = rates.find((c: Currency) => c.code === nextTo.code);
+        // After swap: to = crypto (nextTo), from = fiat (nextFrom)
+        initialToCurrency.current = cryptoCurrencies.find((c) => c.code === nextTo.code)!;
+        initialFromCurrency.current = rates.find((c: Currency) => c.code === nextFrom.code);
       }
     } catch (error) {
       console.error("Error refreshing rates:", error);
@@ -135,13 +136,6 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
       }
       setFromList(userCurrencyCode ? prioritizeUserCurrency(rates, userCurrencyCode) : rates);
       setToList(cryptoCurrencies);
-
-
-
-
-
-
-
       initialFromCurrency.current = rates.find(
         (c: Currency) => c.code === fromCurrency.code
       );
@@ -222,7 +216,7 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
       {isActive && <div className="mt-4 text-center text-xl text-white/50">
         {formatAmount(fromRates)} {fromCurrency.code} ={" "}
         {formatAmount(toRates)} {toCurrency.code ?? fiatCurrencies[0].code}
-        {isAvailableCurrency(toCurrency.code) && <div className="flex flex-col items-center justify-center mt-6 text-swap-text text-2xl cursor-pointer" onClick={() => {
+        {isAvailableCurrency(toCurrency.type === "fiat" ? toCurrency.code : fromCurrency.code) && <div className="flex flex-col items-center justify-center mt-6 text-swap-text text-2xl cursor-pointer" onClick={() => {
           window.open(getNoblocksUrl(), "_blank");
         }}>Swap on Noblocks</div>}
         <Image
