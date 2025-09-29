@@ -13,7 +13,7 @@ const Header: React.FC = () => {
       <Link href="/" className="flex items-center gap-2">
         <Image
           src="/noblocks_rate.svg"
-          alt="logo"
+          alt="Noblocks Rate"
           width={175}
           height={16}
           className="w-[170px] object-contain cursor-pointer"
