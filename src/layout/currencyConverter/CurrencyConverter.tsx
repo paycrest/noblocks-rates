@@ -14,7 +14,7 @@ import { Loader } from "../../components/Loader";
 import { availableCurrencies } from "@/data/availableCurrencies";
 import { getCurrencyByCountry, prioritizeUserCurrency } from "@/utils/currencyUtils";
 
-interface CurrencyConverterProps { }
+type CurrencyConverterProps = Record<string, never>;
 export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
   const [loader, setLoader] = useState<boolean>(false);
   const { fiatCurrencies, cryptoCurrencies, refreshRates } = useCurrencyRates();

@@ -14,8 +14,8 @@ const Header: React.FC = () => {
         <Image
           src="/noblocks_rate.svg"
           alt="logo"
-          width={120}
-          height={120}
+          width={175}
+          height={16}
           className="w-[170px] object-contain cursor-pointer"
         />
       </Link>
