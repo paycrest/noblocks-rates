@@ -69,7 +69,7 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
 
       {isOpen && (
         <div
-          className={`emoji-element absolute top-[3.5rem] border-1 border-white/10 mt-8 w-screen max-w-[23rem] bg-converter-bg rounded-[1.6667rem] shadow-lg z-100 ${type === "from" ? "right-0" : "right-0"
+          className={`emoji-element absolute top-[3.5rem] border-1 border-white/10 mt-8 w-screen max-w-[23rem] bg-converter-bg rounded-[1.6667rem] shadow-lg z-100 overflow-hidden ${type === "from" ? "right-0" : "right-0"
             }`}
         >
           <div className="p-2 rounded-[rounded-[1rem]rem]">
@@ -85,7 +85,7 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
             </div>
           </div>
 
-          <div className="max-h-[24rem] overflow-y-auto overflow-x-hidden px-2">
+          <div className="max-h-[24rem] overflow-y-auto overflow-x-hidden px-2 rounded-b-[1.6667rem]">
             {filteredCurrencies.map((currency) => (
               <button
                 key={currency.code}
