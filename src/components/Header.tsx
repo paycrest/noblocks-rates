@@ -12,11 +12,11 @@ const Header: React.FC = () => {
     <header className="w-full h-[6rem] flex flex-row items-center justify-between gap-7 py-5 px-7 md:px-20">
       <Link href="/" className="flex items-center gap-2">
         <Image
-          src="/noblocks_rate.svg"
-          alt="Noblocks Rate"
-          width={175}
-          height={16}
-          className="w-[170px] object-contain cursor-pointer"
+          src="/noblocks-rates.svg"
+          alt="logo"
+          width={120}
+          height={120}
+          className="w-[120px] h-[27.26px] object-contain cursor-pointer"
         />
       </Link>
 
