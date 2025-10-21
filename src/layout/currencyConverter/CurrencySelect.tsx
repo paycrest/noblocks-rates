@@ -69,7 +69,7 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
 
       {isOpen && (
         <div
-          className={`emoji-element absolute top-[3.5rem] border-1 border-white/10 mt-8 w-screen max-w-[23rem] bg-converter-bg rounded-[1.6667rem] shadow-lg z-100 ${type === "from" ? "right-0" : "right-0"
+          className={`emoji-element absolute top-[3.5rem] border-1 border-white/10 mt-8 w-screen max-w-[23rem] bg-converter-bg rounded-[1.6667rem] shadow-lg z-100 overflow-hidden ${type === "from" ? "right-0" : "right-0"
             }`}
         >
           <div className="p-2 rounded-[rounded-[1rem]rem]">
@@ -85,11 +85,11 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
             </div>
           </div>
 
-          <div className="max-h-[24rem] overflow-y-auto">
+          <div className="max-h-[24rem] overflow-y-auto overflow-x-hidden px-2 rounded-b-[1.6667rem]">
             {filteredCurrencies.map((currency) => (
               <button
                 key={currency.code}
-                className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-[#3C3C3E] transition-colors cursor-pointer"
+                className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-[#3C3C3E] hover:rounded-lg transition-colors cursor-pointer my-1"
                 onClick={() => {
                   onSelect(currency);
                   setIsOpen(false);
@@ -99,21 +99,21 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
                 <img
                   src={currency.type === "fiat" ? `https://flagcdn.com/w40/${currency.symbol!.toLowerCase()}.png` : currency.iconUrl}
                   alt={currency.code}
-                  className="w-8 h-8 rounded-full"
+                  className="w-8 h-8 rounded-full flex-shrink-0"
                 />
 
-                <div className="flex flex-col w-full">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-start gap-2">
-                      <span className="font-medium text-[1.16667rem] text-white">
+                <div className="flex flex-col w-full min-w-0">
+                  <div className="flex items-center justify-between gap-2 w-full">
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                      <span className="font-medium text-[1.16667rem] text-white whitespace-nowrap flex-shrink-0">
                         {currency.code}
                       </span>
-                      <span className="text-[1.16667rem] text-white/80">
+                      <span className="text-[1.16667rem] text-white/80 truncate min-w-0">
                         {currency.name}
                       </span>
                     </div>
                     {selectedCurrency.code === currency.code && (
-                      <Check className="w-4 h-4 text-white/80" />
+                      <Check className="w-4 h-4 text-white/80 flex-shrink-0" />
                     )}
                   </div>
                 </div>
