@@ -130,7 +130,7 @@
     "currency_name": "Canadian Dollar"
   },
   {
-    "country_code": "N/A",
+    "country_code": "CD",
     "currency_code": "CDF",
     "currency_name": "Congolese Franc"
   },
@@ -400,7 +400,7 @@
     "currency_name": "Kazakhstani Tenge"
   },
   {
-    "country_code": "N/A",
+    "country_code": "LA",
     "currency_code": "LAK",
     "currency_name": "Lao Kip"
   },
@@ -760,7 +760,7 @@
     "currency_name": "Samoan tālā"
   },
   {
-    "country_code": "N/A",
+    "country_code": "CF",
     "currency_code": "XAF",
     "currency_name": "Central African CFA Franc"
   },
@@ -775,12 +775,12 @@
     "currency_name": "Special Drawing Rights"
   },
   {
-    "country_code": "N/A",
+    "country_code": "CF",
     "currency_code": "XOF",
     "currency_name": "West African CFA franc"
   },
   {
-    "country_code": "N/A",
+    "country_code": "PF",
     "currency_code": "XPF",
     "currency_name": "CFP Franc"
   },
