@@ -20,7 +20,7 @@
     "currency_name": "Armenian Dram"
   },
   {
-    "country_code": "N/A",
+    "country_code": "NL",
     "currency_code": "ANG",
     "currency_name": "Netherlands Antillian Guilder"
   },
@@ -165,7 +165,7 @@
     "currency_name": "Cuban Peso"
   },
   {
-    "country_code": "N/A",
+    "country_code": "CV",
     "currency_code": "CVE",
     "currency_name": "Cape Verdean Escudo"
   },
@@ -380,7 +380,7 @@
     "currency_name": "Comorian Franc"
   },
   {
-    "country_code": "N/A",
+    "country_code": "KR",
     "currency_code": "KRW",
     "currency_name": "South Korean Won"
   },
