@@ -17,6 +17,8 @@ interface CurrencyInputProps {
   isActive: boolean;
   setActive: (active: boolean) => void;
   setStablecoin?: (selectedCurrency: Currency, label: string) => void;
+  isSwapAnimating?: boolean;
+  animationDelay?: number;
 }
 
 export const CurrencyInput: React.FC<CurrencyInputProps> = ({
@@ -30,6 +32,8 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
   isActive,
   setActive,
   setStablecoin,
+  isSwapAnimating = false,
+  animationDelay = 0,
 }: CurrencyInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [hasTyped, setHasTyped] = useState(false);
@@ -103,7 +107,7 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
   return (
     <div
       className={`
-        rounded-[2.4rem] p-[0.33332rem] 
+        rounded-[2.2rem] p-[0.33332rem] 
         ${
           isActive || isFocused
             ? "bg-gradient-to-br from-[#5c462e] to-[#402d50]"
@@ -112,7 +116,7 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
         transition-all duration-300 
       `}
     >
-      <div className="bg-[#141414] rounded-[1.9rem] p-4 border border-white/5">
+      <div className="bg-[#141414] rounded-[1.95rem] p-4 border border-white/5">
         <div
           className={`${
             type === "from"
@@ -134,6 +138,8 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
             selectedCurrency={selectedCurrency}
             onSelect={updateCurrency}
             type={type}
+            isSwapAnimating={isSwapAnimating}
+            animationDelay={animationDelay}
           />
           <input
             value={displayValue}
