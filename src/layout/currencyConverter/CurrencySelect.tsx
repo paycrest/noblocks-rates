@@ -75,11 +75,21 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
         >
           <div className={`flex w-full items-center ${isSwapAnimating ? "overflow-visible" : "overflow-hidden"}`}>
             <img
-              src={selectedCurrency.type !== "fiat" ? selectedCurrency.iconUrl : `https://flagcdn.com/w40/${selectedCurrency.symbol!.toLowerCase()}.png`}
+              src={
+                selectedCurrency.type !== "fiat"
+                  ? selectedCurrency.iconUrl ?? ""
+                  : (() => {
+                    const flagCode =
+                      selectedCurrency.countryCode ?? selectedCurrency.symbol;
+                    return flagCode
+                      ? `https://flagcdn.com/w40/${flagCode.toLowerCase()}.png`
+                      : "";
+                  })()
+              }
               alt={selectedCurrency.code}
               className={`w-8 h-8 rounded-full flex-shrink-0 ${isSwapAnimating
-                  ? "animate-slide-up-in"
-                  : ""
+                ? "animate-slide-up-in"
+                : ""
                 }`}
               style={{
                 animationDelay: isSwapAnimating ? `${animationDelay}ms` : '0ms',
@@ -90,8 +100,8 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
             <span
               key={`${selectedCurrency.code}-text-${isSwapAnimating}`}
               className={`font-medium text-[1.16667rem] ml-3 ${isSwapAnimating
-                  ? "animate-slide-up-in"
-                  : ""
+                ? "animate-slide-up-in"
+                : ""
                 }`}
               style={{
                 animationDelay: isSwapAnimating ? `${animationDelay}ms` : '0ms',
