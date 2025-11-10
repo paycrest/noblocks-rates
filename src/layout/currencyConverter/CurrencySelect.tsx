@@ -63,6 +63,7 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
       {/* backdrop overlay for mobile modal */}
       {isOpen && (
         <div
+          aria-hidden="true"
           className="fixed inset-0 bg-black/60 z-[9998] md:hidden"
           onClick={() => setIsOpen(false)}
         />
@@ -130,11 +131,16 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
         {isOpen && (
           <>
             {/* mobile modal - slides from bottom */}
-            <div className="fixed inset-x-0 bottom-0 md:hidden z-[9999] animate-modal-slide-up">
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="currency-modal-title"
+              className="fixed inset-x-0 bottom-0 md:hidden z-[9999] animate-modal-slide-up"
+            >
               <div className="bg-converter-bg rounded-t-[2rem] border-t-[0.5px] border-white/10 shadow-2xl max-h-[85vh] flex flex-col">
                 {/* modal header */}
                 <div className="flex items-center justify-between p-4 border-b-[0.5px] border-white/10">
-                  <h3 className="text-[1.333rem] font-semibold text-white">
+                  <h3 id="currency-modal-title" className="text-[1.333rem] font-semibold text-white">
                     Select {type === "from" ? "From" : "To"} Currency
                   </h3>
                   <button
@@ -240,7 +246,17 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
                     }}
                   >
                     <img
-                      src={currency.type === "fiat" ? `https://flagcdn.com/w40/${currency.symbol!.toLowerCase()}.png` : currency.iconUrl}
+                      src={
+                        currency.type === "fiat"
+                          ? (() => {
+                            const flagCode =
+                              currency.countryCode ?? currency.symbol;
+                            return flagCode
+                              ? `https://flagcdn.com/w40/${flagCode.toLowerCase()}.png`
+                              : "";
+                          })()
+                          : currency.iconUrl ?? ""
+                      }
                       alt={currency.code}
                       className="w-8 h-8 rounded-full flex-shrink-0"
                     />
