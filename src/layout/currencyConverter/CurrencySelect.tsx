@@ -62,7 +62,7 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
     <>
       {/* backdrop overlay for mobile modal */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/60 z-[9998] md:hidden"
           onClick={() => setIsOpen(false)}
         />
@@ -74,27 +74,25 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
           className="flex px-2 py-2 items-center !rounded-[2rem] bg-white/5 hover:bg-[#3C3C3E] active:bg-[#2C2C2E] transition-all duration-200 min-w-[9rem] cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/20"
         >
           <div className={`flex w-full items-center ${isSwapAnimating ? "overflow-visible" : "overflow-hidden"}`}>
-             <img
-            src={selectedCurrency.type !== "fiat" ? selectedCurrency.iconUrl : `https://flagcdn.com/w40/${selectedCurrency.symbol!.toLowerCase()}.png`}
-            alt={selectedCurrency.code}
-            className={`w-8 h-8 rounded-full flex-shrink-0 ${
-                isSwapAnimating 
-                  ? "animate-slide-up-in" 
+            <img
+              src={selectedCurrency.type !== "fiat" ? selectedCurrency.iconUrl : `https://flagcdn.com/w40/${selectedCurrency.symbol!.toLowerCase()}.png`}
+              alt={selectedCurrency.code}
+              className={`w-8 h-8 rounded-full flex-shrink-0 ${isSwapAnimating
+                  ? "animate-slide-up-in"
                   : ""
-              }`}
+                }`}
               style={{
                 animationDelay: isSwapAnimating ? `${animationDelay}ms` : '0ms',
                 animationDuration: '200ms',
                 animationFillMode: 'both',
               }}
-          />
-            <span 
+            />
+            <span
               key={`${selectedCurrency.code}-text-${isSwapAnimating}`}
-              className={`font-medium text-[1.16667rem] ml-3 ${
-                isSwapAnimating 
-                  ? "animate-slide-up-in" 
+              className={`font-medium text-[1.16667rem] ml-3 ${isSwapAnimating
+                  ? "animate-slide-up-in"
                   : ""
-              }`}
+                }`}
               style={{
                 animationDelay: isSwapAnimating ? `${animationDelay}ms` : '0ms',
                 animationDuration: '400ms',
@@ -103,15 +101,13 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
             >
               {selectedCurrency.code}
             </span>
-            <ChevronDown 
+            <ChevronDown
               key={`chevron-${isSwapAnimating}`}
-              className={`w-8 h-8 ml-auto transition-transform duration-200 flex-shrink-0 ${
-                isOpen ? "rotate-180" : ""
-              } ${
-                isSwapAnimating 
-                  ? "animate-slide-up-in" 
+              className={`w-8 h-8 ml-auto transition-transform duration-200 flex-shrink-0 ${isOpen ? "rotate-180" : ""
+                } ${isSwapAnimating
+                  ? "animate-slide-up-in"
                   : ""
-              }`}
+                }`}
               style={{
                 animationDelay: isSwapAnimating ? `${animationDelay}ms` : '0ms',
                 animationDuration: '400ms',
@@ -166,10 +162,17 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
                       }}
                     >
                       <img
-                        src={(() => {
-                          const flagCode = currency.countryCode || currency.code;
-                          return flagCode ? `https://flagcdn.com/w40/${flagCode.toLowerCase()}.png` : currency.iconUrl;
-                        })()}
+                        src={
+                          currency.type === "fiat"
+                            ? (() => {
+                              const flagCode =
+                                currency.countryCode ?? currency.symbol;
+                              return flagCode
+                                ? `https://flagcdn.com/w40/${flagCode.toLowerCase()}.png`
+                                : "";
+                            })()
+                            : currency.iconUrl ?? ""
+                        }
                         alt={currency.code}
                         className="w-10 h-10 rounded-full flex-shrink-0"
                       />

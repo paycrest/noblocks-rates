@@ -74,7 +74,10 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
     const initialRatesFetch = async () => {
       try {
         const rates = await refreshRates(initialFromCurrency.current.code.toLowerCase());
-        if (!rates) return;
+        if (!rates){
+          setLoader(false);
+          return;
+        }        
 
         setFromList(cryptoCurrencies);
         setToList(
