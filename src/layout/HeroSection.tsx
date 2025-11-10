@@ -16,7 +16,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ className }) => {
         <h1 className="text-[1.6666rem]">
           Your only <span className=" text-white font-crimson text-[1.99992rem]">Stablecoin</span>
         </h1>
-        <h1 className="text-[1.6666rem]">
+        <h1 className="text-[1.6666rem]" style={{ marginTop: '-10px' }}>
           rate converter to{" "}
           <span className="text-white font-crimson text-[1.99992rem]">any</span>{" "}
           <span className="text-white font-crimson text-[1.99992rem]">fiat</span>
