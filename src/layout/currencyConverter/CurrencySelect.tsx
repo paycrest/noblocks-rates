@@ -74,21 +74,20 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
           className="flex px-2 py-2 items-center !rounded-[2rem] bg-white/5 hover:bg-[#3C3C3E] active:bg-[#2C2C2E] transition-all duration-200 min-w-[9rem] cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/20"
         >
           <div className={`flex w-full items-center ${isSwapAnimating ? "overflow-visible" : "overflow-hidden"}`}>
-            <img
-              key={`${selectedCurrency.code}-${isSwapAnimating}`}
-              src={selectedCurrency.type !== "fiat" ? selectedCurrency.iconUrl : `https://flagcdn.com/w40/${selectedCurrency.symbol!.toLowerCase()}.png`}
-              alt={selectedCurrency.code}
-              className={`w-8 h-8 rounded-full flex-shrink-0 ${
+             <img
+            src={selectedCurrency.type !== "fiat" ? selectedCurrency.iconUrl : `https://flagcdn.com/w40/${selectedCurrency.symbol!.toLowerCase()}.png`}
+            alt={selectedCurrency.code}
+            className={`w-8 h-8 rounded-full flex-shrink-0 ${
                 isSwapAnimating 
                   ? "animate-slide-up-in" 
                   : ""
               }`}
               style={{
                 animationDelay: isSwapAnimating ? `${animationDelay}ms` : '0ms',
-                animationDuration: '400ms',
+                animationDuration: '200ms',
                 animationFillMode: 'both',
               }}
-            />
+          />
             <span 
               key={`${selectedCurrency.code}-text-${isSwapAnimating}`}
               className={`font-medium text-[1.16667rem] ml-3 ${
@@ -167,7 +166,10 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
                       }}
                     >
                       <img
-                        src={currency.type === "fiat" ? `https://flagcdn.com/w40/${currency.symbol!.toLowerCase()}.png` : currency.iconUrl}
+                        src={(() => {
+                          const flagCode = currency.countryCode || currency.code;
+                          return flagCode ? `https://flagcdn.com/w40/${flagCode.toLowerCase()}.png` : currency.iconUrl;
+                        })()}
                         alt={currency.code}
                         className="w-10 h-10 rounded-full flex-shrink-0"
                       />
