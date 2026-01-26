@@ -54,8 +54,8 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
 
   let filteredCurrencies = currencies.filter(
     (currency) =>
-      currency.name.toLowerCase().includes(search.toLowerCase()) ||
-      currency.code.toLowerCase().includes(search.toLowerCase())
+      currency?.name?.toLowerCase().includes(search.toLowerCase()) ||
+      currency?.code?.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
@@ -74,55 +74,53 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
           onClick={() => setIsOpen(!isOpen)}
           className="flex px-2 py-2 items-center !rounded-[2rem] bg-white/5 hover:bg-[#3C3C3E] active:bg-[#2C2C2E] transition-all duration-200 min-w-[9rem] cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/20"
         >
-          <div className={`flex w-full items-center ${isSwapAnimating ? "overflow-visible" : "overflow-hidden"}`}>
+          <div
+            className={`flex w-full items-center ${isSwapAnimating ? "overflow-visible" : "overflow-hidden"}`}
+          >
             <img
               src={
                 selectedCurrency.type !== "fiat"
-                  ? selectedCurrency.iconUrl ?? ""
+                  ? (selectedCurrency.iconUrl ?? "")
                   : (() => {
-                    const flagCode =
-                      selectedCurrency.countryCode ?? selectedCurrency.symbol;
-                    return flagCode
-                      ? `https://flagcdn.com/w40/${flagCode.toLowerCase()}.png`
-                      : "";
-                  })()
+                      const flagCode =
+                        selectedCurrency.countryCode ?? selectedCurrency.symbol;
+                      return flagCode
+                        ? `https://flagcdn.com/w40/${flagCode.toLowerCase()}.png`
+                        : "";
+                    })()
               }
               alt={selectedCurrency.code}
-              className={`w-8 h-8 rounded-full flex-shrink-0 ${isSwapAnimating
-                ? "animate-slide-up-in"
-                : ""
-                }`}
+              className={`w-8 h-8 rounded-full flex-shrink-0 ${
+                isSwapAnimating ? "animate-slide-up-in" : ""
+              }`}
               style={{
-                animationDelay: isSwapAnimating ? `${animationDelay}ms` : '0ms',
-                animationDuration: '200ms',
-                animationFillMode: 'both',
+                animationDelay: isSwapAnimating ? `${animationDelay}ms` : "0ms",
+                animationDuration: "200ms",
+                animationFillMode: "both",
               }}
             />
             <span
               key={`${selectedCurrency.code}-text-${isSwapAnimating}`}
-              className={`font-medium text-[1.16667rem] ml-3 ${isSwapAnimating
-                ? "animate-slide-up-in"
-                : ""
-                }`}
+              className={`font-medium text-[1.16667rem] ml-3 ${
+                isSwapAnimating ? "animate-slide-up-in" : ""
+              }`}
               style={{
-                animationDelay: isSwapAnimating ? `${animationDelay}ms` : '0ms',
-                animationDuration: '400ms',
-                animationFillMode: 'both',
+                animationDelay: isSwapAnimating ? `${animationDelay}ms` : "0ms",
+                animationDuration: "400ms",
+                animationFillMode: "both",
               }}
             >
               {selectedCurrency.code}
             </span>
             <ChevronDown
               key={`chevron-${isSwapAnimating}`}
-              className={`w-8 h-8 ml-auto transition-transform duration-200 flex-shrink-0 ${isOpen ? "rotate-180" : ""
-                } ${isSwapAnimating
-                  ? "animate-slide-up-in"
-                  : ""
-                }`}
+              className={`w-8 h-8 ml-auto transition-transform duration-200 flex-shrink-0 ${
+                isOpen ? "rotate-180" : ""
+              } ${isSwapAnimating ? "animate-slide-up-in" : ""}`}
               style={{
-                animationDelay: isSwapAnimating ? `${animationDelay}ms` : '0ms',
-                animationDuration: '400ms',
-                animationFillMode: 'both',
+                animationDelay: isSwapAnimating ? `${animationDelay}ms` : "0ms",
+                animationDuration: "400ms",
+                animationFillMode: "both",
               }}
             />
           </div>
@@ -140,7 +138,10 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
               <div className="bg-converter-bg rounded-t-[2rem] border-t-[0.5px] border-white/10 shadow-2xl max-h-[85vh] flex flex-col">
                 {/* modal header */}
                 <div className="flex items-center justify-between p-4 border-b-[0.5px] border-white/10">
-                  <h3 id="currency-modal-title" className="text-[1.333rem] font-semibold text-white">
+                  <h3
+                    id="currency-modal-title"
+                    className="text-[1.333rem] font-semibold text-white"
+                  >
                     Select {type === "from" ? "From" : "To"} Currency
                   </h3>
                   <button
@@ -181,13 +182,13 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
                         src={
                           currency.type === "fiat"
                             ? (() => {
-                              const flagCode =
-                                currency.countryCode ?? currency.symbol;
-                              return flagCode
-                                ? `https://flagcdn.com/w40/${flagCode.toLowerCase()}.png`
-                                : "";
-                            })()
-                            : currency.iconUrl ?? ""
+                                const flagCode =
+                                  currency.countryCode ?? currency.symbol;
+                                return flagCode
+                                  ? `https://flagcdn.com/w40/${flagCode.toLowerCase()}.png`
+                                  : undefined;
+                              })()
+                            : (currency.iconUrl ?? undefined)
                         }
                         alt={currency.code}
                         className="w-10 h-10 rounded-full flex-shrink-0"
@@ -215,8 +216,9 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
 
             {/* desktop dropdown - regular behavior */}
             <div
-              className={`emoji-element absolute top-full mt-2 border-[0.5px] border-white/10 w-[23rem] max-w-[90vw] bg-converter-bg rounded-[1.6667rem] shadow-lg z-100 overflow-hidden animate-dropdown-container opacity-0 hidden md:block ${type === "from" ? "left-0" : "right-0"
-                }`}
+              className={`emoji-element absolute top-full mt-2 border-[0.5px] border-white/10 w-[23rem] max-w-[90vw] bg-converter-bg rounded-[1.6667rem] shadow-lg z-100 overflow-hidden animate-dropdown-container opacity-0 hidden md:block ${
+                type === "from" ? "left-0" : "right-0"
+              }`}
             >
               <div className="p-2">
                 <div className="relative border-[0.5px] border-white/10 rounded-[1.2rem] bg-white/5 focus-within:border-white/20 transition-colors animate-search-input">
@@ -249,13 +251,13 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
                       src={
                         currency.type === "fiat"
                           ? (() => {
-                            const flagCode =
-                              currency.countryCode ?? currency.symbol;
-                            return flagCode
-                              ? `https://flagcdn.com/w40/${flagCode.toLowerCase()}.png`
-                              : "";
-                          })()
-                          : currency.iconUrl ?? ""
+                              const flagCode =
+                                currency.countryCode ?? currency.symbol;
+                              return flagCode
+                                ? `https://flagcdn.com/w40/${flagCode.toLowerCase()}.png`
+                                : "";
+                            })()
+                          : (currency.iconUrl ?? "")
                       }
                       alt={currency.code}
                       className="w-8 h-8 rounded-full flex-shrink-0"
