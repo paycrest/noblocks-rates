@@ -80,13 +80,13 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
             <img
               src={
                 selectedCurrency.type !== "fiat"
-                  ? (selectedCurrency.iconUrl ?? "")
+                  ? (selectedCurrency.iconUrl ?? undefined)
                   : (() => {
                       const flagCode =
                         selectedCurrency.countryCode ?? selectedCurrency.symbol;
                       return flagCode
                         ? `https://flagcdn.com/w40/${flagCode.toLowerCase()}.png`
-                        : "";
+                        : undefined;
                     })()
               }
               alt={selectedCurrency.code}
@@ -255,9 +255,9 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
                                 currency.countryCode ?? currency.symbol;
                               return flagCode
                                 ? `https://flagcdn.com/w40/${flagCode.toLowerCase()}.png`
-                                : "";
+                                : undefined;
                             })()
-                          : (currency.iconUrl ?? "")
+                          : (currency.iconUrl ?? undefined)
                       }
                       alt={currency.code}
                       className="w-8 h-8 rounded-full flex-shrink-0"
