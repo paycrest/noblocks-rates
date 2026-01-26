@@ -54,8 +54,8 @@ const CurrencySelect: React.FC<CurrencySelectProps> = ({
 
   let filteredCurrencies = currencies.filter(
     (currency) =>
-      currency?.name?.toLowerCase().includes(search.toLowerCase()) ||
-      currency?.code?.toLowerCase().includes(search.toLowerCase()),
+      currency?.name?.toLowerCase()?.includes(search.toLowerCase()) ||
+      currency?.code?.toLowerCase()?.includes(search.toLowerCase()),
   );
 
   return (
