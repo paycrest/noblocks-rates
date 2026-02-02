@@ -655,6 +655,11 @@
     "currency_name": "São Tomé and Príncipe dobra"
   },
   {
+    "country_code": "SV",
+    "currency_code": "SVC",
+    "currency_name": "Salvadoran Colón"
+  },
+  {
     "country_code": "SY",
     "currency_code": "SYP",
     "currency_name": "Syrian Pound"
