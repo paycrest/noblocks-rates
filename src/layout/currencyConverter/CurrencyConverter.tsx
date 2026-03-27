@@ -14,6 +14,7 @@ import { Loader } from "../../components/Loader";
 import { availableCurrencies } from "@/data/availableCurrencies";
 import {
   getCurrencyByCountry,
+  pickDefaultFiat,
   prioritizeUserCurrency,
 } from "@/utils/currencyUtils";
 
@@ -26,7 +27,7 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
   const [isActive, setIsActive] = useState(false);
 
   const { fiatCurrencies, cryptoCurrencies, refreshRates } = useCurrencyRates();
-  const { location, loading: locationLoading } = useUserLocation();
+  const { location } = useUserLocation();
 
   // get user's local currency code
   const userCurrencyCode = location
@@ -37,9 +38,7 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
     cryptoCurrencies.find((c) => c.code === "USDT") || cryptoCurrencies[0]
   );
   const initialToCurrency = useRef<Currency>(
-    fiatCurrencies.find((c) => c.code === userCurrencyCode) ||
-    fiatCurrencies.find((c) => c.code === "USD") ||
-    fiatCurrencies[0]
+    pickDefaultFiat(fiatCurrencies, userCurrencyCode) ?? fiatCurrencies[0]
   );
 
   const {
@@ -61,30 +60,37 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
 
   const [fromList, setFromList] = useState(cryptoCurrencies);
   const [toList, setToList] = useState(
-    userCurrencyCode
-      ? prioritizeUserCurrency(fiatCurrencies, userCurrencyCode)
-      : fiatCurrencies
+    prioritizeUserCurrency(fiatCurrencies, userCurrencyCode ?? "NGN")
   );
 
   /**
    * Fetch rates and setup lists on mount
    */
-
   useEffect(() => {
     const initialRatesFetch = async () => {
       try {
-        const rates = await refreshRates(initialFromCurrency.current.code.toLowerCase());
-        if (!rates){
+        const rates = await refreshRates(
+          initialFromCurrency.current.code.toLowerCase()
+        );
+        if (!rates) {
           setLoader(false);
           return;
-        }        
+        }
 
         setFromList(cryptoCurrencies);
         setToList(
-          userCurrencyCode
-            ? prioritizeUserCurrency(rates, userCurrencyCode)
-            : rates
+          prioritizeUserCurrency(rates, userCurrencyCode ?? "NGN")
         );
+
+        const resolvedTo =
+          rates.find(
+            (c: Currency) => c.code === initialToCurrency.current?.code
+          ) ?? pickDefaultFiat(rates, userCurrencyCode);
+        if (resolvedTo) {
+          initialToCurrency.current = resolvedTo;
+          setToCurrency(resolvedTo);
+        }
+
         setLoader(false);
       } catch (error) {
         console.error("Error fetching initial rates:", error);
@@ -108,7 +114,7 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
     setToList(fromList);
 
     // Toggle visual swap state
-    setIsSwapped(prev => !prev);
+    setIsSwapped((prev: boolean) => !prev);
 
     setTimeout(() => {
       setIsSwapAnimating(false);
@@ -126,9 +132,7 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
           if (!rates) return;
           setFromList(cryptoCurrencies);
           setToList(
-            userCurrencyCode
-              ? prioritizeUserCurrency(rates, userCurrencyCode)
-              : rates
+            prioritizeUserCurrency(rates, userCurrencyCode ?? "NGN")
           );
           setFromCurrency(selectedCurrency);
         } else if (label === "to" && selectedCurrency.type === "crypto") {
@@ -138,9 +142,7 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
           );
           if (!rates) return;
           setFromList(
-            userCurrencyCode
-              ? prioritizeUserCurrency(rates, userCurrencyCode)
-              : rates
+            prioritizeUserCurrency(rates, userCurrencyCode ?? "NGN")
           );
           setToList(cryptoCurrencies);
           setToCurrency(selectedCurrency);
@@ -153,16 +155,23 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
         console.error("Error updating rates:", err);
       }
     },
-    [refreshRates, cryptoCurrencies, userCurrencyCode, setFromCurrency, setToCurrency]
+    [
+      refreshRates,
+      cryptoCurrencies,
+      userCurrencyCode,
+      setFromCurrency,
+      setToCurrency,
+    ]
   );
 
   /**
-   * Prioritize user’s fiat after location load
+   * Prioritize user's fiat after location load
    */
   useEffect(() => {
-    if (!isSwapped && userCurrencyCode && fiatCurrencies.length > 0) {
-      setToList(prioritizeUserCurrency(fiatCurrencies, userCurrencyCode));
-    }
+    if (isSwapped || fiatCurrencies.length === 0) return;
+    setToList(
+      prioritizeUserCurrency(fiatCurrencies, userCurrencyCode ?? "NGN")
+    );
   }, [location, userCurrencyCode, fiatCurrencies, isSwapped]);
 
   const handleFromCurrencySelect = (currency: Currency) =>
@@ -186,6 +195,10 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = () => {
       currency
     )}&tokenAmount=${encodeURIComponent(String(tokenAmount))}`;
   };
+
+  if (fiatCurrencies.length === 0 || cryptoCurrencies.length === 0) {
+    return null;
+  }
 
   if (loader) {
     return (

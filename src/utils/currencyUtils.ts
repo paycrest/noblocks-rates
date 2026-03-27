@@ -1,4 +1,5 @@
 import currenciesCodes from '@/data/currenciesCodes.json';
+import type { Currency } from '@/types/currency';
 
 /**
  * Maps country codes to their primary currency codes
@@ -44,4 +45,21 @@ export const prioritizeUserCurrency = (
   );
   
   return [userCurrency, ...otherCurrencies];
+};
+
+/**
+ * Picks default fiat: user's locale currency if listed, else NGN, else USD, else first.
+ */
+export const pickDefaultFiat = (
+  fiatCurrencies: Currency[],
+  userCurrencyCode: string | null
+): Currency | undefined => {
+  if (fiatCurrencies.length === 0) return undefined;
+  return (
+    (userCurrencyCode &&
+      fiatCurrencies.find((c) => c.code === userCurrencyCode)) ||
+    fiatCurrencies.find((c) => c.code === 'NGN') ||
+    fiatCurrencies.find((c) => c.code === 'USD') ||
+    fiatCurrencies[0]
+  );
 };

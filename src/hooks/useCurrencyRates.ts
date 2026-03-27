@@ -6,10 +6,10 @@ import currenciesCodes from "@/data/currenciesCodes.json";
 export const useCurrencyRates = () => {
   const rates = useRef<any[]>([
     {
-      code: "INR",
-      name: "Indian Rupee",
-      rate: 99.29,
-      symbol: "IN",
+      code: "NGN",
+      name: "Nigerian Naira",
+      rate: 1600,
+      symbol: "NG",
       type: "fiat",
     },
   ]);
